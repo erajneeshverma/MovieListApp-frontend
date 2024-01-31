@@ -7,14 +7,25 @@ const FilterMovies = () => {
   const [filterType, setFilterType] = useState('');
   const [filterValue, setFilterValue] = useState('');
   const [filteredMovies, setFilteredMovies] = useState([]);
-
+  const [count,setCount] = useState(null);
   const handleFilter = () => {
+    if(filterType==="numOfFilms"){
+      axios.get(`${BASE_URL}/movie/countbylanguage?language=${filterValue}`) // Update the API endpoint
+      .then((response) => {
+        console.log(response);
+        setFilteredMovies(response.data.data.result);
+        setCount(response.data.data.count);
+        console.log(count,filterValue);
+      })
+      .catch(error => console.error('Error filtering movies:', error));
+    }else{
     axios.get(`${BASE_URL}/movie/filterby${filterType}?${filterType}=${filterValue}`) // Update the API endpoint
       .then((response) => {
         console.log(response);
         setFilteredMovies(response.data.data)
       })
       .catch(error => console.error('Error filtering movies:', error));
+    }
   };
 
   useEffect(() => {
@@ -58,6 +69,10 @@ const FilterMovies = () => {
           Filter
         </button>
       </div>
+      
+      {count===null?null:(<div>
+        <p className='text-2xl font-bold mb-4'>No of {filterValue} language Movies are :  {count}</p>
+      </div>)}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredMovies.map(movie => (
           <MovieCard key={movie._id} movie={movie} />

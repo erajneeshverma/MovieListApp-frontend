@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../Utils/Url';
 const UpdateMovie = () => {
-  const { id } = useParams(); // Get the movie ID from the URL params
+  const { id } = useParams(); 
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -15,12 +15,12 @@ const UpdateMovie = () => {
     rating: ''
   });
 
-  console.log(id);
+ // console.log(id);
 
   useEffect(() => {
     axios.get(`${BASE_URL}/movie/${id}`) 
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         setFormData(response.data.data)
     })
     .catch(error => console.error('Error, while fetching movie details:', error));
@@ -38,11 +38,12 @@ const UpdateMovie = () => {
     try {
       // Perform API call to update the movie
       const res = await axios.put(`${BASE_URL}/movie/${id}`, formData); 
-      if(res.ok){
+      console.log(res);
+      if(res.data.success==true){
         console.log("updateded Successfully")
-        navigate('/allmovies');
+        navigate('/movies');
       }else{
-
+        console.log("Error While Updating Movie...");
       }
     } catch (error) {
       console.error('Error updating movie:', error);
