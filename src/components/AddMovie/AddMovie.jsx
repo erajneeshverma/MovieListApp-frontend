@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import {BASE_URL} from '../Utils/Url.js';
 const AddMoviePage = () => {
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ const AddMoviePage = () => {
   const handleAddMovie = async () => {
     try {
       
-        const res = await axios.post('http://localhost:5000/api/v1/movie/add', formData);
+        const res = await axios.post(`${BASE_URL}/movie/add`, formData);
     
         if(res.ok){
             console.log("Movie Added Succesfull",res);

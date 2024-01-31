@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MovieCard from '../AllMovies/MovieCard.jsx'; // Assuming you have a MovieCard component
-
+import { BASE_URL } from '../Utils/Url.js';
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     // Fetch movies from your backend API
-    axios.get('http://localhost:5000/api/v1/movie/movies') 
+    axios.get(`${BASE_URL}/movie/movies`) 
     .then((response) => {
         console.log(response.data.data.movies);
         setSearchResults(response.data.data.movies);
@@ -19,7 +19,7 @@ const Search = () => {
 
   const handleSearch = () => {
     // Fetch movies based on the title from your backend API
-    axios.get(`http://localhost:5000/api/v1/movie/search?q=${searchQuery}`) 
+    axios.get(`${BASE_URL}/movie/search?q=${searchQuery}`) 
       .then((response) => {
         console.log(response)
         setSearchResults(response.data.data)

@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MovieCard from '../AllMovies/MovieCard.jsx'; // Assuming you have a MovieCard component
-
+import { BASE_URL } from '../Utils/Url.js';
 const FilterMovies = () => {
   const [filterType, setFilterType] = useState('');
   const [filterValue, setFilterValue] = useState('');
   const [filteredMovies, setFilteredMovies] = useState([]);
 
   const handleFilter = () => {
-    axios.get(`http://localhost:5000/api/v1/movie/filterby${filterType}?${filterType}=${filterValue}`) // Update the API endpoint
+    axios.get(`${BASE_URL}/movie/filterby${filterType}?${filterType}=${filterValue}`) // Update the API endpoint
       .then((response) => {
         console.log(response);
         setFilteredMovies(response.data.data)
@@ -19,7 +19,7 @@ const FilterMovies = () => {
 
   useEffect(() => {
     // Fetch movies from your backend API
-    axios.get('http://localhost:5000/api/v1/movie/movies') 
+    axios.get(`${BASE_URL}/movie/movies`) 
     .then((response) => {
         console.log(response.data.data.movies);
         setFilteredMovies(response.data.data.movies);

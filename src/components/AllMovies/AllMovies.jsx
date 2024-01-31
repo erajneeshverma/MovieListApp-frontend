@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MovieCard from './MovieCard.jsx'; // Assuming you have a MovieCard component
-
+import { BASE_URL } from '../Utils/Url.js';
 const AllMoviesPage = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     // Fetch movies from your backend API
-    axios.get('http://localhost:5000/api/v1/movie/movies') 
+    axios.get(`${BASE_URL}/movie/movies`) 
     .then((response) => {
         console.log(response.data.data.movies);
         setMovies(response.data.data.movies);

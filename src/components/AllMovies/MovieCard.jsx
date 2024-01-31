@@ -2,13 +2,13 @@
 import React, {useEffect, useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import { BASE_URL } from '../Utils/Url.js';
 const MovieCard = ({ movie}) => {
   const navigate = useNavigate();
   const { _id, title, director, releaseyear, language, rating } = movie;
 
   const handleDelteClick = () => {
-      axios.delete(`http://localhost:5000/api/v1/movie/${_id}`)
+      axios.delete(`${BASE_URL}/movie/${_id}`)
       .then((res)=>{
         alert("Movie Deleted");
         window.location.reload(true);

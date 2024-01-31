@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import { BASE_URL } from '../Utils/Url';
 const UpdateMovie = () => {
   const { id } = useParams(); // Get the movie ID from the URL params
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const UpdateMovie = () => {
   console.log(id);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/movie/api/v1/movie/${id}`) 
+    axios.get(`${BASE_URL}/movie/${id}`) 
       .then((response) => {
         console.log(response.data);
         setFormData(response.data.data)
@@ -37,7 +37,7 @@ const UpdateMovie = () => {
   const handleUpdateMovie = async () => {
     try {
       // Perform API call to update the movie
-      const res = await axios.put(`http://localhost:5000/api/v1/movie/${id}`, formData); 
+      const res = await axios.put(`${BASE_URL}/movie/${id}`, formData); 
       if(res.ok){
         console.log("updateded Successfully")
         navigate('/allmovies');
