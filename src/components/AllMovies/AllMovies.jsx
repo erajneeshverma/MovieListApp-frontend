@@ -1,0 +1,32 @@
+// AllMoviesPage.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import MovieCard from './MovieCard.jsx'; // Assuming you have a MovieCard component
+
+const AllMoviesPage = () => {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    // Fetch movies from your backend API
+    axios.get('http://localhost:5000/api/v1/movie/movies') 
+    .then((response) => {
+        console.log(response.data.data.movies);
+        setMovies(response.data.data.movies);
+    })
+    .catch(error => console.error('Error fetching movies:', error));
+  }, []);
+
+  
+  return (
+    <div className="container mx-auto mt-8">
+      <h1 className="text-2xl font-bold mb-4">All Movies</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {movies.map(movie => (
+          <MovieCard  key={movie._id} movie={movie} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default AllMoviesPage;
