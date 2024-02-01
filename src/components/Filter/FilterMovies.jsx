@@ -3,12 +3,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MovieCard from '../AllMovies/MovieCard.jsx'; // Assuming you have a MovieCard component
 import { BASE_URL } from '../Utils/Url.js';
+import LoadingComponent from '../Loader/LoadingComponent.jsx'
+
 const FilterMovies = () => {
   const [filterType, setFilterType] = useState('');
   const [filterValue, setFilterValue] = useState('');
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [count,setCount] = useState(null);
+  const [loading,setLoading] = useState(true);
+
+
   const handleFilter = () => {
+    setLoading(true);
     if(filterType==="numOfFilms"){
       axios.get(`${BASE_URL}/movie/countbylanguage?language=${filterValue}`) // Update the API endpoint
       .then((response) => {
@@ -16,6 +22,7 @@ const FilterMovies = () => {
         setFilteredMovies(response.data.data.result);
         setCount(response.data.data.count);
         console.log(count,filterValue);
+        setLoading(false);
       })
       .catch(error => console.error('Error filtering movies:', error));
     }else{
@@ -23,6 +30,7 @@ const FilterMovies = () => {
       .then((response) => {
         console.log(response);
         setFilteredMovies(response.data.data)
+        setLoading(false);
       })
       .catch(error => console.error('Error filtering movies:', error));
     }
@@ -34,12 +42,14 @@ const FilterMovies = () => {
     .then((response) => {
         console.log(response.data.data.movies);
         setFilteredMovies(response.data.data.movies);
+        setLoading(false);
     })
     .catch(error => console.error('Error fetching movies:', error));
   }, []);
 
   return (
-    <div className="container mx-auto mt-8">
+    <>
+      {loading ? (<LoadingComponent />): (<div className="container mx-auto mt-8">
       <h1 className="text-2xl font-bold mb-4">Filter Movies</h1>
       <div className="mb-4 flex">
         <select
@@ -78,7 +88,8 @@ const FilterMovies = () => {
           <MovieCard key={movie._id} movie={movie} />
         ))}
       </div>
-    </div>
+    </div>)}
+    </>
   );
 }
 

@@ -3,32 +3,38 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MovieCard from '../AllMovies/MovieCard.jsx'; // Assuming you have a MovieCard component
 import { BASE_URL } from '../Utils/Url.js';
+import LoadingComponent from '../Loader/LoadingComponent.jsx'
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-
+  const [loading,setLoading] = useState(true);
+  
   useEffect(() => {
     // Fetch movies from your backend API
     axios.get(`${BASE_URL}/movie/movies`) 
     .then((response) => {
         console.log(response.data.data.movies);
         setSearchResults(response.data.data.movies);
+        setLoading(false);
     })
     .catch(error => console.error('Error fetching movies:', error));
   }, []);
 
   const handleSearch = () => {
+    setLoading(true);
     // Fetch movies based on the title from your backend API
     axios.get(`${BASE_URL}/movie/search?q=${searchQuery}`) 
       .then((response) => {
         console.log(response)
         setSearchResults(response.data.data)
+        setLoading(false);
       })
       .catch(error => console.error('Error searching movies:', error));
   };
 
   return (
-    <div className="container mx-auto mt-8">
+    <>
+      {loading ? (<LoadingComponent />): (<div className="container mx-auto mt-8">
       <h1 className="text-2xl font-bold mb-4">Search Movies</h1>
       <div className="mb-4 flex">
         <input
@@ -50,7 +56,8 @@ const Search = () => {
           <MovieCard key={movie._id} movie={movie} />
         ))}
       </div>
-    </div>
+    </div>)}
+    </>
   );
 }
 
