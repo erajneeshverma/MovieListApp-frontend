@@ -70,9 +70,9 @@ const FilterMovies = () => {
         </button>
       </div>
       
-      {count===null?null:(<div>
+      {(filterType==="numOfFilms" &&  count!==null)?(<div>
         <p className='text-2xl font-bold mb-4'>No of {filterValue} language Movies are :  {count}</p>
-      </div>)}
+      </div>):null}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredMovies.map(movie => (
           <MovieCard key={movie._id} movie={movie} />
